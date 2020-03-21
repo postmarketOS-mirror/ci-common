@@ -69,7 +69,7 @@ def get_mr_settings(path):
     # Parse JSON
     try:
         return json.loads(content)
-    except:
+    except Exception:
         print("ERROR: failed to decode JSON. Here's the whole content for"
               " debugging:")
         print("---")
