@@ -3,12 +3,17 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # usage: install_pmbootstrap.sh [ADDITIONAL_PACKAGE, ...]
 
-# Config: pmbootstrap tag (or branch)
+# pmbootstrap tag/branch and url
 tag="master"
-
-# Get download URL and pmaports path
 url="https://gitlab.com/postmarketOS/pmbootstrap.git"
+
+# pmaports: either checked out in current dir, or let pmbootstrap download it
 pmaports="$(cd $(dirname $0)/..; pwd -P)"
+pmaports_arg=""
+if [ -e "$pmaports/pmaports.cfg" ]; then
+	echo "Found pmaports.cfg in current dir"
+	pmaports_arg="--aports '$pmaports'"
+fi
 
 # Set up depends and binfmt_misc
 depends="coreutils openssl python3 sudo git $@"
@@ -31,7 +36,7 @@ git -C pmbootstrap checkout -q "$tag"
 # Install to $PATH and init
 ln -s /tmp/pmbootstrap/pmbootstrap.py /usr/local/bin/pmbootstrap
 echo "Initializing pmbootstrap"
-if ! su pmos -c "yes '' | pmbootstrap -q --aports '$pmaports' --details-to-stdout init"; then
+if ! su pmos -c "yes '' | pmbootstrap -q $pmaports_arg --details-to-stdout init"; then
 	echo "ERROR: pmbootstrap init failed!"
 	echo
 	echo "Most likely, this means that pmbootstrap requires a newer"
