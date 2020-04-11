@@ -3,6 +3,6 @@ topdir="$(realpath "$(dirname "$0")/..")"
 cd "$topdir"
 
 # shellcheck disable=SC2046
-flake8 $(find . -name '*.py')
+shellcheck $(find . -name '*.sh')
 
-echo "flake8 check passed"
+echo "shellcheck passed"

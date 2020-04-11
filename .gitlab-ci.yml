@@ -6,3 +6,10 @@ flake8:
   - "pip3 -q --disable-pip-version-check install flake8"
   script:
   - ".ci/flake8.sh"
+
+shellcheck:
+  image: "alpine:latest"
+  before_script:
+  - "apk -q add shellcheck"
+  script:
+  - ".ci/shellcheck.sh"

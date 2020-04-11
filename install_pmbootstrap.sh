@@ -8,7 +8,7 @@ tag="master"
 url="https://gitlab.com/postmarketOS/pmbootstrap.git"
 
 # pmaports: either checked out in current dir, or let pmbootstrap download it
-pmaports="$(cd $(dirname $0)/..; pwd -P)"
+pmaports="$(cd "$(dirname "$0")"/..; pwd -P)"
 pmaports_arg=""
 if [ -e "$pmaports/pmaports.cfg" ]; then
 	echo "Found pmaports.cfg in current dir"
@@ -16,8 +16,9 @@ if [ -e "$pmaports/pmaports.cfg" ]; then
 fi
 
 # Set up depends and binfmt_misc
-depends="coreutils openssl python3 sudo git $@"
+depends="coreutils openssl python3 sudo git $*"
 echo "Installing dependencies: $depends"
+# shellcheck disable=SC2086
 apk -q add $depends
 mount -t binfmt_misc none /proc/sys/fs/binfmt_misc
 
