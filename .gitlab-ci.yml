@@ -13,3 +13,9 @@ shellcheck:
   - "apk -q add shellcheck"
   script:
   - ".ci/shellcheck.sh"
+
+install-pmbootstrap:
+  image: "alpine:latest"
+  script:
+  - "./install_pmbootstrap.sh"
+  - su pmos -c "pmbootstrap chroot -- echo 'hello world'"
