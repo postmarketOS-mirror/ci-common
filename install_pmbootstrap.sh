@@ -16,8 +16,17 @@ if [ -e "$pmaports/pmaports.cfg" ]; then
 fi
 
 # Set up depends and binfmt_misc
-depends="coreutils openssl python3 sudo git $*"
-echo "Installing dependencies: $depends"
+depends="coreutils
+	git
+	openssl
+	python3
+	sudo
+	$*"
+printf "Installing dependencies:"
+for i in $depends; do
+	printf "%s" " $i"
+done
+printf "\n"
 # shellcheck disable=SC2086
 apk -q add $depends
 mount -t binfmt_misc none /proc/sys/fs/binfmt_misc
