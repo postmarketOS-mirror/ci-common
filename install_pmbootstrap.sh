@@ -19,6 +19,7 @@ fi
 depends="coreutils
 	git
 	openssl
+	procps
 	python3
 	sudo
 	$*"
