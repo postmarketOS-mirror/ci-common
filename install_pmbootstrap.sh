@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # usage: install_pmbootstrap.sh [ADDITIONAL_PACKAGE, ...]
 
-: ${PMBOOTSTRAP_TAG:="master"}
-: ${PMBOOTSTRAP_URL:="https://gitlab.com/postmarketOS/pmbootstrap.git"}
+: "${PMBOOTSTRAP_TAG:="master"}"
+: "${PMBOOTSTRAP_URL:="https://gitlab.com/postmarketOS/pmbootstrap.git"}"
 
 # pmaports: either checked out in current dir, or let pmbootstrap download it
 pmaports="$(cd "$(dirname "$0")"/..; pwd -P)"
