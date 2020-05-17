@@ -6,14 +6,6 @@
 : "${PMBOOTSTRAP_TAG:="master"}"
 : "${PMBOOTSTRAP_URL:="https://gitlab.com/postmarketOS/pmbootstrap.git"}"
 
-# pmaports: either checked out in current dir, or let pmbootstrap download it
-pmaports="$(cd "$(dirname "$0")"; pwd -P)"
-pmaports_arg=""
-if [ -e "$pmaports/pmaports.cfg" ]; then
-	echo "Found pmaports.cfg in current dir"
-	pmaports_arg="--aports '$pmaports'"
-fi
-
 # Set up depends and binfmt_misc
 depends="coreutils
 	git
@@ -36,6 +28,25 @@ echo "Creating pmos user"
 adduser -D pmos
 chown -R pmos:pmos .
 echo 'pmos ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+# pmaports: either checked out in current dir, or let pmbootstrap download it
+pmaports="$(cd "$(dirname "$0")"; pwd -P)"
+pmaports_arg=""
+if [ -e "$pmaports/pmaports.cfg" ]; then
+	echo "Found pmaports.cfg in current dir"
+	pmaports_arg="--aports '$pmaports'"
+
+	# Add original remote, so pmbootstrap can use its channels.cfg
+	if ! git -C "$pmaports" \
+		remote add -f origin-original \
+		"https://gitlab.com/postmarketOS/pmaports.git" \
+		>/tmp/git_remote_add 2>&1; then
+		echo "ERROR: failed to add original remote with git!"
+		echo
+		cat /tmp/git_remote_add
+		exit 1
+	fi
+fi
 
 # Download pmbootstrap (to /tmp/pmbootstrap)
 echo "Downloading pmbootstrap ($PMBOOTSTRAP_TAG): $PMBOOTSTRAP_URL"
