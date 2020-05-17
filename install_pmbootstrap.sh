@@ -3,9 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # usage: install_pmbootstrap.sh [ADDITIONAL_PACKAGE, ...]
 
-# pmbootstrap tag/branch and url
-tag="master"
-url="https://gitlab.com/postmarketOS/pmbootstrap.git"
+: ${PMBOOTSTRAP_TAG:="master"}
+: ${PMBOOTSTRAP_URL:="https://gitlab.com/postmarketOS/pmbootstrap.git"}
 
 # pmaports: either checked out in current dir, or let pmbootstrap download it
 pmaports="$(cd "$(dirname "$0")"/..; pwd -P)"
@@ -39,10 +38,10 @@ chown -R pmos:pmos .
 echo 'pmos ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 # Download pmbootstrap (to /tmp/pmbootstrap)
-echo "Downloading pmbootstrap ($tag): $url"
+echo "Downloading pmbootstrap ($PMBOOTSTRAP_TAG): $PMBOOTSTRAP_URL"
 cd /tmp
-git clone -q "$url"
-git -C pmbootstrap checkout -q "$tag"
+git clone -q "$PMBOOTSTRAP_URL"
+git -C pmbootstrap checkout -q "$PMBOOTSTRAP_TAG"
 
 # Install to $PATH and init
 ln -s /tmp/pmbootstrap/pmbootstrap.py /usr/local/bin/pmbootstrap
