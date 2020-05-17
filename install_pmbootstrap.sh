@@ -7,7 +7,7 @@
 : "${PMBOOTSTRAP_URL:="https://gitlab.com/postmarketOS/pmbootstrap.git"}"
 
 # pmaports: either checked out in current dir, or let pmbootstrap download it
-pmaports="$(cd "$(dirname "$0")"/..; pwd -P)"
+pmaports="$(cd "$(dirname "$0")"; pwd -P)"
 pmaports_arg=""
 if [ -e "$pmaports/pmaports.cfg" ]; then
 	echo "Found pmaports.cfg in current dir"
