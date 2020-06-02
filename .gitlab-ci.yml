@@ -1,5 +1,12 @@
 ---
+.only-default: &only-default
+  only:
+    - master
+    - merge_requests
+    - tags
+
 flake8:
+  <<: *only-default
   image: "alpine:latest"
   before_script:
   - "apk -q add py3-pip"
@@ -8,6 +15,7 @@ flake8:
   - ".ci/flake8.sh"
 
 shellcheck:
+  <<: *only-default
   image: "alpine:latest"
   before_script:
   - "apk -q add shellcheck"
@@ -15,7 +23,17 @@ shellcheck:
   - ".ci/shellcheck.sh"
 
 install-pmbootstrap:
+  <<: *only-default
   image: "alpine:latest"
   script:
   - "./install_pmbootstrap.sh"
   - su pmos -c "pmbootstrap chroot -- echo 'hello world'"
+
+mr-settings:
+  only:
+    - merge_requests
+  image: "alpine:latest"
+  before_script:
+    - "apk -q add python3"
+  script:
+    - "./check_mr_settings.py"
