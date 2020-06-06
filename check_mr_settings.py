@@ -37,7 +37,7 @@ def get_url_api():
 
 def get_url_mr_edit():
     """ :returns: the link where the user can edit their own MR """
-    url = "https://gitlab.com/{}/merge_requests/{}/edit"
+    url = "https://gitlab.com/{}/-/merge_requests/{}/edit"
     return url.format(os.environ["CI_MERGE_REQUEST_PROJECT_PATH"],
                       os.environ["CI_MERGE_REQUEST_IID"])
 
@@ -45,7 +45,7 @@ def get_url_mr_edit():
 def get_url_repo_settings():
     """ :returns: link to the user's forked pmaports project's settings """
     prefix = os.environ["CI_MERGE_REQUEST_SOURCE_PROJECT_URL"]
-    return prefix + "/settings/repository"
+    return prefix + "/-/settings/repository"
 
 
 def get_mr_settings(path):
