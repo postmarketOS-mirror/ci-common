@@ -46,6 +46,12 @@ if [ -e "$pmaports/pmaports.cfg" ]; then
 		cat /tmp/git_remote_add
 		exit 1
 	fi
+
+	# Use the channel of the current branch
+	mkdir -p ~pmos/.config
+	( echo "[pmbootstrap]"
+	  echo "is_default_channel = False" ) > ~pmos/.config/pmbootstrap.cfg
+	chown -R pmos:pmos ~pmos/.config
 fi
 
 # Download pmbootstrap (to /tmp/pmbootstrap)
