@@ -2,6 +2,7 @@
 .only-default: &only-default
   only:
     - master
+    - wip
     - merge_requests
     - tags
 
