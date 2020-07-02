@@ -38,3 +38,11 @@ mr-settings:
     - "apk -q add python3"
   script:
     - "./check_mr_settings.py"
+
+distfile-check:
+  <<: *only-default
+  image: "alpine:latest"
+  before_script:
+  - "apk -q add findutils make"
+  script:
+  - cd distfile-check && ./test.sh
