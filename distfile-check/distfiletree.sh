@@ -58,7 +58,8 @@ for s in $source; do
 	urihash="$(distfile_hash "$distfile")"
 	if [ -z "$urihash" ]; then
 		echo "ERROR: pkgname=$pkgname, distfile=$distfile:" \
-			"failed to find urihash!"
+			"not found in sha512sums! Forgot to generate" \
+			"checksums?"
 		exit 1
 	fi
 
