@@ -54,10 +54,14 @@ if ! mount | grep -q /proc/sys/fs/binfmt_misc; then
 fi
 
 # Create pmos user
-echo "Creating pmos user"
-adduser -D pmos
-chown -R pmos:pmos .
-echo 'pmos ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+if id "pmos" > /dev/null 2>&1; then
+	echo "User 'pmos' exists already"
+else
+	echo "Creating pmos user"
+	adduser -D pmos
+	chown -R pmos:pmos .
+	echo 'pmos ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+fi
 
 # pmaports: either checked out in current dir, or let pmbootstrap download it
 pmaports="$(cd "$(dirname "$0")"; pwd -P)"
