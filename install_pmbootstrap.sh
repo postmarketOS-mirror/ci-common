@@ -6,6 +6,32 @@
 : "${PMBOOTSTRAP_TAG:="master"}"
 : "${PMBOOTSTRAP_URL:="https://gitlab.com/postmarketOS/pmbootstrap.git"}"
 
+# Add the "origin-original" remote to an existing pmaports.git clone, so
+# pmbootstrap can use its channels.cfg.
+add_remote_origin_original() {
+	# Skip if existing (happens in single runner setup)
+	remote_url="https://gitlab.com/postmarketOS/pmaports.git"
+	remote_url_existing="$(git -C "$pmaports" \
+				remote get-url origin-original 2>/dev/null \
+				|| true)"
+	if [ "$remote_url" = "$remote_url_existing" ]; then
+		echo "Remote 'origin-original' is already configured"
+		git -C "$pmaports" fetch -q origin-original
+		return
+	fi
+
+	# Add the remote, display the output only on error
+	if ! git -C "$pmaports" \
+		remote add -f origin-original \
+		"https://gitlab.com/postmarketOS/pmaports.git" \
+		>/tmp/git_remote_add 2>&1; then
+		echo "ERROR: failed to add original remote with git!"
+		echo
+		cat /tmp/git_remote_add
+		exit 1
+	fi
+}
+
 # Set up depends and binfmt_misc
 depends="coreutils
 	git
@@ -36,16 +62,7 @@ if [ -e "$pmaports/pmaports.cfg" ]; then
 	echo "Found pmaports.cfg in current dir"
 	pmaports_arg="--aports '$pmaports'"
 
-	# Add original remote, so pmbootstrap can use its channels.cfg
-	if ! git -C "$pmaports" \
-		remote add -f origin-original \
-		"https://gitlab.com/postmarketOS/pmaports.git" \
-		>/tmp/git_remote_add 2>&1; then
-		echo "ERROR: failed to add original remote with git!"
-		echo
-		cat /tmp/git_remote_add
-		exit 1
-	fi
+	add_remote_origin_original
 
 	# Use the channel of the current branch
 	mkdir -p ~pmos/.config
