@@ -27,8 +27,7 @@ install-pmbootstrap:
   <<: *only-default
   image: "alpine:latest"
   script:
-  - "./install_pmbootstrap.sh"
-  - su pmos -c "pmbootstrap chroot -- echo 'hello world'"
+  - "test/install_pmbootstrap_test.sh"
 
 mr-settings:
   only:
