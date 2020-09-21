@@ -32,7 +32,7 @@ add_remote_origin_original() {
 	fi
 }
 
-# Set up depends and binfmt_misc
+# Set up depends
 depends="coreutils
 	git
 	openssl
@@ -47,7 +47,11 @@ done
 printf "\n"
 # shellcheck disable=SC2086
 apk -q add $depends
-mount -t binfmt_misc none /proc/sys/fs/binfmt_misc
+
+# Set up binfmt_misc
+if ! mount | grep -q /proc/sys/fs/binfmt_misc; then
+	mount -t binfmt_misc none /proc/sys/fs/binfmt_misc
+fi
 
 # Create pmos user
 echo "Creating pmos user"
