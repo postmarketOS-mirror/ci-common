@@ -82,11 +82,12 @@ fi
 # Download pmbootstrap (to /tmp/pmbootstrap)
 echo "Downloading pmbootstrap ($PMBOOTSTRAP_TAG): $PMBOOTSTRAP_URL"
 cd /tmp
+rm -rf pmbootstrap
 git clone -q "$PMBOOTSTRAP_URL"
 git -C pmbootstrap checkout -q "$PMBOOTSTRAP_TAG"
 
 # Install to $PATH and init
-ln -s /tmp/pmbootstrap/pmbootstrap.py /usr/local/bin/pmbootstrap
+ln -sf /tmp/pmbootstrap/pmbootstrap.py /usr/local/bin/pmbootstrap
 echo "Initializing pmbootstrap"
 if ! su pmos -c "yes '' | pmbootstrap \
 		$pmaports_arg \
