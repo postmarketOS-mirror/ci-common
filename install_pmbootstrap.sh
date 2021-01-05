@@ -79,6 +79,10 @@ if [ -e "$pmaports/pmaports.cfg" ]; then
 	chown -R pmos:pmos ~pmos/.config
 fi
 
+# Create /lib/modules ('modprobe loop' gets called in 'pmbootstrap install' and
+# crashes if this dir is missing)
+sudo mkdir -p /lib/modules
+
 # Download pmbootstrap (to /tmp/pmbootstrap)
 echo "Downloading pmbootstrap ($PMBOOTSTRAP_TAG): $PMBOOTSTRAP_URL"
 cd /tmp
